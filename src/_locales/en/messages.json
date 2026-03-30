@@ -4,15 +4,15 @@
         "description": "この翻訳ファイルのロケール"
     },
     "extension_name": {
-        "message": "Better Waseda Moodle",
+        "message": "Better Waseda Moodle 改",
         "description": "この拡張機能の名前"
     },
     "extension_shortname": {
-        "message": "BWM",
+        "message": "BWM改",
         "description": "この拡張機能の略称"
     },
     "extension_description": {
-        "message": "Improve the usability of Waseda Moodle.",
+        "message": "A browser extension that improves Waseda Moodle (Moodle 4.4 compatible, with Dark Mode)",
         "description": "この拡張機能の説明文"
     },
     "error_message": {

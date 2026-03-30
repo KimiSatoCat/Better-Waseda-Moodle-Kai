@@ -46,6 +46,8 @@ assertExtensionContext(["content_script", "extension_page"]);
         case "wsdmoodle.waseda.jp":
             // ダークモードは wsdmoodle.waseda.jp の全ページで有効にする
             import("./dark-mode/content");
+            // お問い合わせボタンも全ページで有効にする
+            import("./contact/content");
 
             switch (location.pathname) {
                 case "/my/":

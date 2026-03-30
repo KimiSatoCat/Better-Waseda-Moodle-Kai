@@ -1,0 +1,13 @@
+{
+  "name": "bwm-inquiry-api",
+  "version": "1.0.0",
+  "description": "Better Waseda Moodle 改 - お問い合わせ・寄付バックエンド API",
+  "main": "index.js",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "stripe": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

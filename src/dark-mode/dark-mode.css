@@ -700,3 +700,22 @@ html.bwm-dark-mode .send-message-txt {
     color: var(--bwm-dark-text) !important;
     border-color: var(--bwm-dark-border) !important;
 }
+
+/* ─────────────────────────────────────────────
+   お問い合わせモーダル
+───────────────────────────────────────────── */
+html.bwm-dark-mode #bwm-contact-modal-root .MuiDialog-paper,
+html.bwm-dark-mode #bwm-contact-modal-root .MuiDialogTitle-root,
+html.bwm-dark-mode #bwm-contact-modal-root .MuiDialogContent-root {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+html.bwm-dark-mode #bwm-contact-modal-root .MuiAlert-root {
+    background-color: rgba(92,107,192,0.2) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+html.bwm-dark-mode #bwm-contact-btn {
+    color: var(--bwm-dark-nav-text) !important;
+}

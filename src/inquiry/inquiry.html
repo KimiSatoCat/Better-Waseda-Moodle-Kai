@@ -232,6 +232,67 @@
   </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════════
+     免責事項確認モーダル（ページ読み込み時に表示）
+═══════════════════════════════════════════════ -->
+<div id="disclaimer-modal" style="
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);
+    display:flex;align-items:center;justify-content:center;
+    z-index:9999;padding:16px;
+">
+  <div style="
+    background:#fff;border-radius:12px;max-width:560px;width:100%;
+    padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    max-height:90vh;overflow-y:auto;
+  ">
+    <h2 style="font-size:1.1rem;color:#8b1a2a;margin-bottom:16px;">
+      📋 ご利用前にご確認ください
+    </h2>
+
+    <div style="font-size:0.83rem;line-height:1.8;color:#333;">
+      <p><strong>■ サービスの独立性</strong><br>
+      本お問い合わせフォームおよびBetter Waseda Moodle 改は、
+      <strong>早稲田大学・大学事務局・Moodle Project・その他大学関係機関とは一切無関係の</strong>
+      個人開発プロジェクトです。名称中の「Waseda Moodle」は動作対象を説明するための
+      叙述的使用であり、商標権の侵害にはあたりません。</p>
+
+      <p><strong>■ 個人情報の取り扱い</strong><br>
+      入力いただいた情報（氏名・所属・メールアドレス・要望内容）は、
+      開発者への要望連絡のみに使用します。
+      AI要約後に開発者専用チャンネルへ通知され、外部DBへの永続保存は行いません。
+      第三者への提供は一切行いません。</p>
+
+      <p><strong>■ お問い合わせ料金（¥500）について</strong><br>
+      スパム防止・サービス維持を目的とした料金です。
+      支払いはStripe社の決済システムを通じて安全に処理されます。
+      決済完了後の返金は原則対応しておりません。</p>
+
+      <p><strong>■ 免責事項</strong><br>
+      本サービスはWaseda Moodleの公式サービスではありません。
+      大学システムの仕様変更等による機能停止について開発者は責任を負いません。
+      本サービスの利用はご自身の判断と責任において行ってください。</p>
+    </div>
+
+    <div style="margin-top:20px;display:flex;gap:10px;">
+      <button onclick="document.getElementById('disclaimer-modal').style.display='none'"
+        style="flex:2;padding:12px;background:#8b1a2a;color:#fff;border:none;
+               border-radius:8px;font-size:0.95rem;font-weight:700;cursor:pointer;">
+        ✅ 同意してフォームを開く
+      </button>
+      <button onclick="window.close()||history.back()"
+        style="flex:1;padding:12px;background:#f0f0f0;color:#555;border:none;
+               border-radius:8px;font-size:0.9rem;cursor:pointer;">
+        閉じる
+      </button>
+    </div>
+
+    <p style="font-size:0.72rem;color:#999;margin-top:12px;text-align:center;">
+      早稲田大学・Moodle Projectとは一切関係ありません
+    </p>
+  </div>
+</div>
+
 <div class="container">
 
   <!-- ヘッダー -->
@@ -244,45 +305,18 @@
   <!-- ══════════════════════════════════════════════
        法的免責事項 / Legal Disclaimer
        ══════════════════════════════════════════════ -->
-  <div class="notice">
-    ⚠️ <strong>【重要】本サービスご利用前に必ずお読みください</strong><br><br>
-
-    <strong>■ サービスの独立性について</strong><br>
-    本お問い合わせフォームおよびBetter Waseda Moodle 改ブラウザ拡張機能（以下「本サービス」）は、
-    <strong>早稲田大学・同大学事務局・授業担当教員・Moodle Project・その他いかなる大学関係機関とも一切関係のない</strong>、
-    個人開発者による独立したソフトウェアプロジェクトです。<br>
-    本サービスの名称中に含まれる「Waseda Moodle」は、本サービスが動作対象とするシステムを説明するための
-    <strong>叙述的使用（Descriptive Use）</strong>であり、早稲田大学の商標権を侵害するものではありません。<br><br>
-
-    <strong>■ 免責事項（不正競争防止法・商標法対応）</strong><br>
-    本サービスは早稲田大学の公式サービス・推奨サービスではありません。
-    大学公式システムのご利用に関するお問い合わせは大学情報企画部へお問い合わせください。<br><br>
-
-    <strong>■ 個人情報の取り扱い（個人情報保護法対応）</strong><br>
-    送信いただいた氏名・所属・メールアドレス・お問い合わせ内容は、
-    開発者への連絡・要望対応の目的のみに使用し、第三者への提供は一切行いません。
-    データはAI要約処理後、開発者の専用Slackチャンネルに通知され、外部DBへの永続保存はしません。<br><br>
-
-    <strong>■ 利用者の自己責任（特定商取引法・電子消費者契約法対応）</strong><br>
-    本サービスの利用およびお問い合わせ料金（¥500）・寄付の支払いは、
-    利用者ご自身の判断と責任において行われるものとします。
-    技術的な問題・大学システムの仕様変更による機能停止等について、開発者は責任を負いません。<br><br>
-
-    <strong>■ 送信をもってご同意いただいたものとみなします</strong>
-  </div>
-
   <!-- フォーム本体 -->
   <div id="form-view">
     <div class="card">
       <h2>📝 お問い合わせ内容</h2>
 
       <div class="form-group">
-        <label>お名前 <span class="req">*</span></label>
-        <input type="text" id="inp-name" placeholder="佐藤 公宜" maxlength="50" />
+        <label>お名前 <span style="font-size:0.75rem;color:#999;">（任意）</span></label>
+        <input type="text" id="inp-name" placeholder="早稲田 太郎" maxlength="50" />
       </div>
       <div class="form-group">
-        <label>所属（学部・研究科など） <span class="req">*</span></label>
-        <input type="text" id="inp-affiliation" placeholder="人間科学部 人間情報科学科" maxlength="100" />
+        <label>所属（学部・研究科など） <span style="font-size:0.75rem;color:#999;">（任意）</span></label>
+        <input type="text" id="inp-affiliation" placeholder="人間科学部 人間情報科学科（任意）" maxlength="100" />
       </div>
       <div class="form-group">
         <label>メールアドレス <span class="req">*</span></label>
@@ -476,8 +510,8 @@ document.getElementById("btn-submit").addEventListener("click", async () => {
 
   errorEl.textContent = "";
 
-  if (!name || !affiliation || !email || !content) {
-    errorEl.textContent = "すべての必須項目を入力してください。";
+  if (!email || !content) {
+    errorEl.textContent = "メールアドレスとお問い合わせ内容は必須です。";
     return;
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {

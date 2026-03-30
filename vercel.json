@@ -1,7 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "",
-  "outputDirectory": ".",
+  "installCommand": "npm install",
+  "buildCommand": "echo 'API-only deployment - no frontend build'",
+  "outputDirectory": "public",
   "functions": {
     "api/*.ts": {
       "runtime": "@vercel/node@3.2.0"

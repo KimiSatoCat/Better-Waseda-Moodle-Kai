@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お問い合わせ – Better Waseda Moodle 改</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --bg-card: #fff;
+      --text: #1a1a1a;
+      --text-muted: #666;
+      --border: #ddd;
+      --accent: #8b1a2a;
+      --accent-light: #c0392b;
+      --success: #2ecc71;
+      --error: #e74c3c;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+    .container { max-width: 680px; margin: 0 auto; }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding: 24px;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border-left: 4px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .header h1 { font-size: 1.4rem; color: var(--accent); margin-bottom: 8px; }
+    .header p  { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+    .notice {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      font-size: 0.82rem;
+      color: #5d4037;
+      line-height: 1.7;
+    }
+    .notice strong { color: #e65100; }
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .card h2 {
+      font-size: 1rem;
+      margin-bottom: 18px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+    label .req { color: var(--error); margin-left: 2px; }
+    input[type="text"], input[type="email"], textarea, input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      transition: border-color .2s;
+      background: #fafafa;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 120px; }
+    .payment-section { margin-top: 8px; }
+    .payment-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all .2s;
+      color: var(--text-muted);
+    }
+    .tab-btn.active {
+      border-color: var(--accent);
+      background: #fff0f0;
+      color: var(--accent);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    #card-element {
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fafafa;
+      transition: border-color .2s;
+    }
+    #card-element.StripeElement--focus { border-color: var(--accent); background: #fff; }
+    .price-note {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: #f0f4ff;
+      border-radius: 6px;
+    }
+    .coupon-row { display: flex; gap: 8px; }
+    .coupon-row input { flex: 1; }
+    .btn-apply {
+      padding: 10px 16px;
+      background: #f5f5f5;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+    .btn-apply:hover { background: #ebebeb; }
+    .coupon-status { font-size: 0.82rem; margin-top: 6px; height: 18px; }
+    .coupon-status.ok  { color: var(--success); }
+    .coupon-status.err { color: var(--error); }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+      margin-top: 8px;
+    }
+    .btn-submit:hover:not(:disabled) { background: var(--accent-light); }
+    .btn-submit:disabled { opacity: .6; cursor: default; }
+    .form-error {
+      color: var(--error);
+      font-size: 0.82rem;
+      margin-top: 8px;
+      min-height: 20px;
+    }
+    /* 寄付セクション */
+    .donate-card {
+      background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 24px;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(26,35,126,0.3);
+    }
+    .donate-card h2 { color: #fff; font-size: 1.1rem; margin-bottom: 10px; }
+    .donate-card p { font-size: 0.86rem; opacity: .9; line-height: 1.7; margin-bottom: 16px; }
+    .donate-amounts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .amount-btn {
+      padding: 8px 20px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all .2s;
+    }
+    .amount-btn:hover, .amount-btn.selected {
+      background: rgba(255,255,255,0.25);
+      border-color: #fff;
+    }
+    .donate-disclaimer {
+      font-size: 0.75rem;
+      opacity: .7;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+    .btn-donate {
+      width: 100%;
+      padding: 13px;
+      background: #fff;
+      color: #1a237e;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-donate:hover { opacity: .9; }
+    /* 完了画面 */
+    #success-view { display: none; text-align: center; padding: 40px 20px; }
+    #success-view .emoji { font-size: 3rem; margin-bottom: 16px; }
+    #success-view h2 { font-size: 1.3rem; margin-bottom: 12px; color: #2c3e50; }
+    #success-view p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ヘッダー -->
+  <div class="header">
+    <h1>📬 お問い合わせ・要望</h1>
+    <p>Better Waseda Moodle 改 拡張機能に関するご要望・ご意見をお送りください。</p>
+  </div>
+
+  <!-- 注意書き -->
+  <div class="notice">
+    ⚠️ <strong>重要：</strong>このお問い合わせフォームは <strong>Better Waseda Moodle 改 ブラウザ拡張機能</strong> に関するご要望専用です。<br>
+    早稲田大学・大学事務・授業・学校行事・Moodle自体に関するお問い合わせは <strong>一切受け付けておりません</strong>。<br>
+    本サービスは早稲田大学および Moodle とは <strong>一切関係ありません</strong>。個人開発者による独立したプロジェクトです。<br>
+    送信内容は開発者のみが確認し、第三者への提供は行いません。
+  </div>
+
+  <!-- フォーム本体 -->
+  <div id="form-view">
+    <div class="card">
+      <h2>📝 お問い合わせ内容</h2>
+
+      <div class="form-group">
+        <label>お名前 <span class="req">*</span></label>
+        <input type="text" id="inp-name" placeholder="佐藤 公宜" maxlength="50" />
+      </div>
+      <div class="form-group">
+        <label>所属（学部・研究科など） <span class="req">*</span></label>
+        <input type="text" id="inp-affiliation" placeholder="人間科学部 人間情報科学科" maxlength="100" />
+      </div>
+      <div class="form-group">
+        <label>メールアドレス <span class="req">*</span></label>
+        <input type="email" id="inp-email" placeholder="xxx@waseda.jp" maxlength="200" />
+      </div>
+      <div class="form-group">
+        <label>ご要望・お問い合わせ内容 <span class="req">*</span>（2000文字以内）</label>
+        <textarea id="inp-content" placeholder="具体的なご要望をお書きください..." maxlength="2000"></textarea>
+        <div style="text-align:right;font-size:0.78rem;color:var(--text-muted);margin-top:4px"><span id="char-count">0</span>/2000</div>
+      </div>
+    </div>
+
+    <!-- 支払い -->
+    <div class="card">
+      <h2>💳 お問い合わせ料（¥500）</h2>
+      <div class="price-note">
+        お問い合わせの送信には ¥500 が必要です。スパム防止・継続的なメンテナンス費用として活用いたします。<br>
+        開発者クーポンをお持ちの方は無料でお送りいただけます。
+      </div>
+
+      <div class="payment-tabs">
+        <button class="tab-btn active" data-tab="stripe">💳 カードで支払い</button>
+        <button class="tab-btn" data-tab="coupon">🎟️ クーポンコード</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-stripe">
+        <div id="card-element"></div>
+        <div id="card-errors" style="color:var(--error);font-size:0.82rem;margin-top:6px;min-height:18px;"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-coupon">
+        <div class="coupon-row">
+          <input type="password" id="inp-coupon" placeholder="クーポンコードを入力" autocomplete="off" />
+          <button class="btn-apply" id="btn-apply-coupon">適用</button>
+        </div>
+        <div class="coupon-status" id="coupon-status"></div>
+      </div>
+
+      <div class="form-error" id="form-error"></div>
+      <button class="btn-submit" id="btn-submit">
+        送信する（¥500）
+      </button>
+    </div>
+  </div>
+
+  <!-- 完了画面 -->
+  <div id="success-view" class="card">
+    <div class="emoji">🎉</div>
+    <h2>ありがとうございます！</h2>
+    <p>
+      お問い合わせを受け付けました。<br>
+      いただいたご意見をもとに、Waseda Moodle がより使いやすくなるよう改善に取り組んでまいります。<br><br>
+      <em>このフォームは早稲田大学・Moodle とは一切関係のない個人開発プロジェクトです。</em>
+    </p>
+  </div>
+
+  <!-- ─── 寄付セクション ─── -->
+  <div class="donate-card" id="donate-section">
+    <h2>☕ 開発を応援する（任意寄付）</h2>
+    <p>
+      Better Waseda Moodle 改 はすべて個人開発・無償提供です。<br>
+      いただいたサポートは Waseda Moodle をより快適にするための機能開発・維持費に充てさせていただきます。<br>
+      どうぞよろしければご支援ください。
+    </p>
+
+    <div class="donate-amounts">
+      <button class="amount-btn selected" data-amount="200">¥200</button>
+      <button class="amount-btn" data-amount="500">¥500</button>
+      <button class="amount-btn" data-amount="1000">¥1,000</button>
+      <button class="amount-btn" data-amount="3000">¥3,000</button>
+      <button class="amount-btn" data-amount="5000">¥5,000</button>
+    </div>
+
+    <button class="btn-donate" id="btn-donate">
+      ☕ ¥200 を寄付する
+    </button>
+
+    <p class="donate-disclaimer">
+      ※ 本サービスは早稲田大学・大学事務・Moodle とは一切関係ありません。<br>
+      ※ 寄付の払い戻しは原則対応しておりません。<br>
+      ※ 寄付は義務ではなく、完全に任意です。
+    </p>
+  </div>
+
+</div>
+
+<script>
+// ────────────────────────────────────
+// 設定（Vercel環境変数から注入される想定・ここはフォールバック）
+// ────────────────────────────────────
+const API_BASE = "https://better-waseda-moodle-kai.vercel.app";
+const STRIPE_PUBLISHABLE_KEY = "%%STRIPE_PUBLISHABLE_KEY%%"; // ビルド時に置換
+
+const VALID_COUPON = "test_betterwasedamoodle_kiminobusato_19980303_hokkaido_humanscience_1J23F072_3826C052";
+
+// ────────────────────────────────────
+// Stripe 初期化
+// ────────────────────────────────────
+let stripe, cardElement, paymentIntentClientSecret;
+
+if (STRIPE_PUBLISHABLE_KEY && !STRIPE_PUBLISHABLE_KEY.startsWith("%%")) {
+  stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+  const elements = stripe.elements();
+  cardElement = elements.create("card", {
+    style: {
+      base: {
+        fontSize: "16px",
+        color: "#1a1a1a",
+        "::placeholder": { color: "#aaa" }
+      }
+    }
+  });
+  cardElement.mount("#card-element");
+  cardElement.on("change", e => {
+    document.getElementById("card-errors").textContent = e.error ? e.error.message : "";
+  });
+}
+
+// PaymentIntentを事前に取得
+async function initPaymentIntent() {
+  try {
+    const res = await fetch(`${API_BASE}/api/create-payment-intent`, { method: "POST" });
+    const data = await res.json();
+    paymentIntentClientSecret = data.clientSecret;
+  } catch (e) {
+    console.warn("PaymentIntent取得失敗:", e);
+  }
+}
+initPaymentIntent();
+
+// ────────────────────────────────────
+// タブ切り替え
+// ────────────────────────────────────
+let activeTab = "stripe";
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b === btn));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === `tab-${activeTab}`));
+    const submitBtn = document.getElementById("btn-submit");
+    submitBtn.textContent = activeTab === "coupon" && couponValid ? "送信する（無料）" : "送信する（¥500）";
+  });
+});
+
+// ────────────────────────────────────
+// 文字数カウンター
+// ────────────────────────────────────
+document.getElementById("inp-content").addEventListener("input", function () {
+  document.getElementById("char-count").textContent = this.value.length;
+});
+
+// ────────────────────────────────────
+// クーポンコード
+// ────────────────────────────────────
+let couponValid = false;
+
+document.getElementById("btn-apply-coupon").addEventListener("click", () => {
+  const code = document.getElementById("inp-coupon").value.trim();
+  const statusEl = document.getElementById("coupon-status");
+  const submitBtn = document.getElementById("btn-submit");
+
+  if (code === VALID_COUPON) {
+    couponValid = true;
+    statusEl.textContent = "✅ クーポンコードが適用されました（無料で送信できます）";
+    statusEl.className = "coupon-status ok";
+    submitBtn.textContent = "送信する（無料）";
+  } else {
+    couponValid = false;
+    statusEl.textContent = "❌ クーポンコードが正しくありません";
+    statusEl.className = "coupon-status err";
+    submitBtn.textContent = "送信する（¥500）";
+  }
+});
+
+// ────────────────────────────────────
+// フォーム送信
+// ────────────────────────────────────
+document.getElementById("btn-submit").addEventListener("click", async () => {
+  const name = document.getElementById("inp-name").value.trim();
+  const affiliation = document.getElementById("inp-affiliation").value.trim();
+  const email = document.getElementById("inp-email").value.trim();
+  const content = document.getElementById("inp-content").value.trim();
+  const errorEl = document.getElementById("form-error");
+  const submitBtn = document.getElementById("btn-submit");
+
+  errorEl.textContent = "";
+
+  if (!name || !affiliation || !email || !content) {
+    errorEl.textContent = "すべての必須項目を入力してください。";
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errorEl.textContent = "メールアドレスの形式が正しくありません。";
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span>送信中...';
+
+  let paymentIntentId = null;
+  const useCoupon = activeTab === "coupon" && couponValid;
+
+  // Stripeで支払い
+  if (!useCoupon) {
+    if (!stripe || !paymentIntentClientSecret) {
+      errorEl.textContent = "決済の初期化に失敗しました。ページを再読み込みしてください。";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "送信する（¥500）";
+      return;
+    }
+
+    const result = await stripe.confirmCardPayment(paymentIntentClientSecret, {
+      payment_method: { card: cardElement }
+    });
+
+    if (result.error) {
+      errorEl.textContent = result.error.message;
+      submitBtn.disabled = false;
+      submitBtn.textContent = "送信する（¥500）";
+      return;
+    }
+
+    paymentIntentId = result.paymentIntent.id;
+  }
+
+  // APIに送信
+  try {
+    const res = await fetch(`${API_BASE}/api/submit-inquiry`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name, affiliation, email, content,
+        paymentIntentId: useCoupon ? undefined : paymentIntentId,
+        couponCode: useCoupon ? document.getElementById("inp-coupon").value.trim() : undefined,
+      }),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById("form-view").style.display = "none";
+      document.getElementById("success-view").style.display = "block";
+      document.getElementById("success-view").style.display = "flex";
+      document.getElementById("success-view").style.flexDirection = "column";
+      document.getElementById("success-view").style.alignItems = "center";
+    } else {
+      errorEl.textContent = data.error ?? "送信に失敗しました。しばらく後にお試しください。";
+      submitBtn.disabled = false;
+      submitBtn.textContent = useCoupon ? "送信する（無料）" : "送信する（¥500）";
+    }
+  } catch (e) {
+    errorEl.textContent = "ネットワークエラーが発生しました。";
+    submitBtn.disabled = false;
+    submitBtn.textContent = useCoupon ? "送信する（無料）" : "送信する（¥500）";
+  }
+});
+
+// ────────────────────────────────────
+// 寄付ボタン
+// ────────────────────────────────────
+let selectedDonateAmount = 200;
+
+document.querySelectorAll(".amount-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedDonateAmount = parseInt(btn.dataset.amount);
+    document.querySelectorAll(".amount-btn").forEach(b => b.classList.toggle("selected", b === btn));
+    document.getElementById("btn-donate").textContent =
+      `☕ ¥${selectedDonateAmount.toLocaleString()} を寄付する`;
+  });
+});
+
+document.getElementById("btn-donate").addEventListener("click", async () => {
+  const btn = document.getElementById("btn-donate");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner" style="border-top-color:#1a237e;border-color:rgba(26,35,126,0.2);"></span>処理中...';
+
+  try {
+    // 寄付用PaymentIntentを作成
+    const res = await fetch(`${API_BASE}/api/create-payment-intent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: selectedDonateAmount, type: "donation" }),
+    });
+    const data = await res.json();
+
+    if (data.clientSecret && stripe) {
+      const result = await stripe.confirmCardPayment(data.clientSecret, {
+        payment_method: { card: cardElement }
+      });
+
+      if (result.error) {
+        alert("決済に失敗しました: " + result.error.message);
+      } else {
+        btn.textContent = "✅ ありがとうございます！";
+        btn.style.background = "#4caf50";
+        btn.style.color = "#fff";
+        setTimeout(() => {
+          btn.textContent = `☕ ¥${selectedDonateAmount.toLocaleString()} を寄付する`;
+          btn.style.background = "#fff";
+          btn.style.color = "#1a237e";
+          btn.disabled = false;
+        }, 4000);
+        return;
+      }
+    }
+  } catch (e) {
+    alert("ネットワークエラーが発生しました。");
+  }
+
+  btn.disabled = false;
+  btn.textContent = `☕ ¥${selectedDonateAmount.toLocaleString()} を寄付する`;
+});
+</script>
+</body>
+</html>

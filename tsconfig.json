@@ -3,7 +3,10 @@
         "baseUrl": ".",
         "target": "ESNext",
         "module": "ESNext",
-        "lib": ["ESNext", "DOM"],
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
         "jsx": "react",
         "sourceMap": true,
         "strict": true,
@@ -12,8 +15,20 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": [
+                "src/*"
+            ]
         },
-        "typeRoots": ["node_modules/@types", "src/@types"]
-    }
+        "typeRoots": [
+            "node_modules/@types",
+            "src/@types"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "api"
+    ],
+    "include": [
+        "src"
+    ]
 }

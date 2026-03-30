@@ -1,6 +1,6 @@
 {
     "name": "better-waseda-moodle",
-    "version": "0.9.6",
+    "version": "0.9.7",
     "description": "A browser extension that makes Waseda Moodle a little better",
     "private": true,
     "scripts": {

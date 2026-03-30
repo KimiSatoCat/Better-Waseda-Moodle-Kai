@@ -545,3 +545,158 @@ html.bwm-dark-mode .tag-item {
 html.bwm-dark-mode #bwm-darkmode-toggle {
     color: var(--bwm-dark-nav-text) !important;
 }
+
+/* ─────────────────────────────────────────────
+   通知ポップアップ
+   （ベルアイコンをクリックで開くパネル）
+───────────────────────────────────────────── */
+html.bwm-dark-mode [data-region="notification-popover-container"],
+html.bwm-dark-mode .popover-region-container,
+html.bwm-dark-mode .popover-region-notifications,
+html.bwm-dark-mode .popover-region-container .container,
+html.bwm-dark-mode .popover-region-container .container-fluid,
+html.bwm-dark-mode .notification-area,
+html.bwm-dark-mode .notifications-container,
+html.bwm-dark-mode [data-region="popover-region-container"] {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+html.bwm-dark-mode .popover-region-header-container,
+html.bwm-dark-mode .popover-region-container .popover-region-header-container {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    color: var(--bwm-dark-text) !important;
+    border-bottom: 1px solid var(--bwm-dark-border) !important;
+}
+
+html.bwm-dark-mode .popover-region-container .list-group-item,
+html.bwm-dark-mode .notification-list .list-group-item,
+html.bwm-dark-mode [data-region="notification-popover-container"] .list-group-item {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+html.bwm-dark-mode .popover-region-container .list-group-item:hover {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+}
+
+html.bwm-dark-mode .notification-message,
+html.bwm-dark-mode .notification-subject,
+html.bwm-dark-mode .notification-time {
+    color: var(--bwm-dark-text) !important;
+}
+
+html.bwm-dark-mode .notification-time,
+html.bwm-dark-mode .notification-sender,
+html.bwm-dark-mode .popover-region-container small {
+    color: var(--bwm-dark-text-muted) !important;
+}
+
+/* ─────────────────────────────────────────────
+   メッセージドロワー
+   （チャットアイコンをクリックで開くサイドパネル）
+───────────────────────────────────────────── */
+html.bwm-dark-mode [data-region="message-drawer"],
+html.bwm-dark-mode .message-app,
+html.bwm-dark-mode .messaging-app,
+html.bwm-dark-mode [data-region="conversations-list"],
+html.bwm-dark-mode [data-region="view-overview"],
+html.bwm-dark-mode [data-region="view-conversation"],
+html.bwm-dark-mode [data-region="view-group-info"],
+html.bwm-dark-mode [data-region="view-contact-request"],
+html.bwm-dark-mode .message-drawer,
+html.bwm-dark-mode .message-drawer .container,
+html.bwm-dark-mode .message-drawer .container-fluid {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+/* メッセージドロワーのヘッダー */
+html.bwm-dark-mode [data-region="message-drawer"] .header,
+html.bwm-dark-mode [data-region="message-drawer"] header,
+html.bwm-dark-mode .message-drawer .header,
+html.bwm-dark-mode [data-region="view-overview"] .header,
+html.bwm-dark-mode .view-overview-header,
+html.bwm-dark-mode .conversations-list-header {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    color: var(--bwm-dark-text) !important;
+    border-bottom: 1px solid var(--bwm-dark-border) !important;
+}
+
+/* 会話リスト */
+html.bwm-dark-mode [data-region="conversations-list"] .list-group-item,
+html.bwm-dark-mode [data-region="message-drawer"] .list-group-item,
+html.bwm-dark-mode .message-conversation-list-item,
+html.bwm-dark-mode [data-region="conversations-list-favourites"] .list-group-item,
+html.bwm-dark-mode [data-region="conversations-list-groupchats"] .list-group-item,
+html.bwm-dark-mode [data-region="conversations-list-self"] .list-group-item,
+html.bwm-dark-mode [data-region="conversations-list-legacy"] .list-group-item {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+html.bwm-dark-mode [data-region="message-drawer"] .list-group-item:hover,
+html.bwm-dark-mode [data-region="conversations-list"] .list-group-item:hover {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+}
+
+/* メッセージ検索バー */
+html.bwm-dark-mode [data-region="message-drawer"] input[type="search"],
+html.bwm-dark-mode [data-region="message-drawer"] input[type="text"],
+html.bwm-dark-mode [data-region="message-drawer"] .form-control,
+html.bwm-dark-mode .message-search-input {
+    background-color: var(--bwm-dark-bg-input) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+/* タブ（星付き・グループ・プライベート） */
+html.bwm-dark-mode [data-region="message-drawer"] .nav-tabs,
+html.bwm-dark-mode [data-region="message-drawer"] .nav-tabs .nav-link,
+html.bwm-dark-mode [data-region="message-drawer"] .tab-content,
+html.bwm-dark-mode [data-region="message-drawer"] .tab-pane {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+html.bwm-dark-mode [data-region="message-drawer"] .nav-tabs .nav-link.active {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    color: #fff !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+/* 会話の吹き出し */
+html.bwm-dark-mode [data-region="message-drawer"] .message,
+html.bwm-dark-mode .message-content,
+html.bwm-dark-mode [data-region="message-drawer"] .message-content {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+/* 送信者名・時刻 */
+html.bwm-dark-mode [data-region="message-drawer"] .message-user-name,
+html.bwm-dark-mode [data-region="message-drawer"] small,
+html.bwm-dark-mode .message-conversation-label,
+html.bwm-dark-mode .message-latest-message-time {
+    color: var(--bwm-dark-text-muted) !important;
+}
+
+/* メッセージ入力エリア */
+html.bwm-dark-mode [data-region="message-drawer"] .message-send-container,
+html.bwm-dark-mode [data-region="message-drawer"] .footer,
+html.bwm-dark-mode [data-region="message-drawer"] footer {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    border-top: 1px solid var(--bwm-dark-border) !important;
+}
+
+html.bwm-dark-mode [data-region="send-message-txt"],
+html.bwm-dark-mode .send-message-txt {
+    background-color: var(--bwm-dark-bg-input) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}

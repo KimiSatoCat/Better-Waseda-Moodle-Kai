@@ -84,10 +84,8 @@ function injectToggle(navList: HTMLUListElement, isDark: boolean): void {
         e.preventDefault();
         const next = !getConfig(ConfigKey.DarkModeEnabled);
         await setConfig(ConfigKey.DarkModeEnabled, next);
-        applyDarkMode(next);
-        updateToggleLabel(btn, next);
-        btn.setAttribute("aria-label", next ? "ライトモードに切り替える" : "ダークモードに切り替える");
-        btn.setAttribute("title", next ? "ライトモードに切り替える" : "ダークモードに切り替える");
+        // 設定保存後にリロード（全コンテンツのスタイルを確実に切り替えるため）
+        location.reload();
     });
 
     li.appendChild(btn);

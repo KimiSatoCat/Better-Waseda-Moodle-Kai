@@ -38,10 +38,38 @@ export const login = combinePromise(
                     "https://wsdmoodle.waseda.jp/auth/saml2/login.php?wants=https%3A%2F%2Fwsdmoodle.waseda.jp%2F&idp=fcc52c5d2e034b1803ea1932ae2678b0&passive=off"
                 );
 
-                if (page2.getElementsByTagName("script")[0]?.textContent?.startsWith("//<![CDATA[\n$Config={")) {
-                    const strParams = page2.getElementsByTagName("script")[0]?.textContent?.slice(20, -7);
-                    if (!strParams) throw new InvalidResponseError("cannot find `$Config`");
-                    const params = JSON.parse(strParams);
+                /**
+                 * Microsoft Azure ADログインページの$Config解析。
+                 *
+                 * 旧実装: script[0].textContent?.startsWith("//<![CDATA[\n$Config={") および
+                 *   .slice(20, -7) というハードコードオフセットを使用していた。
+                 *   Microsoftがページ構造・CDATAラップの有無を変更すると即座に壊れる。
+                 *
+                 * 新実装: 正規表現で全scriptタグから$Configを安全に抽出する。
+                 *   - 全scriptタグを対象（位置[0]限定しない）
+                 *   - CDATA付き・なし両方に対応
+                 *   - JSON.parseでパース前にtry/catchで保護
+                 */
+                const allScripts = Array.from(page2.getElementsByTagName("script")).map(
+                    (s) => s.textContent ?? ""
+                );
+                const configScript = allScripts.find((t) => t.includes("$Config"));
+
+                if (configScript) {
+                    const configMatch = configScript.match(/\$Config\s*=\s*(\{[\s\S]*?\})\s*;/);
+                    if (!configMatch) throw new InvalidResponseError("cannot find `$Config` object in script");
+
+                    // JSON.parseに失敗した場合は InvalidResponseError を投げる。
+                    // try-catchの外で params を使うため，parse失敗時は必ずthrowして
+                    // 以降のコードに到達させない構造にしている。
+                    const parseResult = (() => {
+                        try {
+                            return JSON.parse(configMatch[1]) as Record<string, string>;
+                        } catch {
+                            throw new InvalidResponseError("failed to parse `$Config` JSON from Microsoft login page");
+                        }
+                    })();
+                    const params = parseResult;
 
                     const { userId, password } = loginInfo.get();
 
@@ -127,9 +155,12 @@ export const login = combinePromise(
                 }
                 const page = await response.text();
 
-                const sessionKey = page.match(
-                    /"https:\/\/wsdmoodle\.waseda\.jp\/login\/logout\.php\?sesskey=([^"]+)"/
-                )?.[1];
+                const sessionKey =
+                    // 方法1: ログアウトリンクのhref属性（Moodle 3.x〜4.3で確認）
+                    page.match(/"https:\/\/wsdmoodle\.waseda\.jp\/login\/logout\.php\?sesskey=([^"]+)"/)?.[1] ??
+                    // 方法2: M.cfg.sesskey（Moodle 4.x インラインscriptから抽出）
+                    // Moodleは全認証済みページで <script>M.cfg = {..., "sesskey": "XXXX"}</script> を出力する
+                    page.match(/"sesskey"\s*:\s*"([^"]+)"/)?.[1];
                 if (!sessionKey) throw new InvalidResponseError("cannot find sessionKey");
 
                 return sessionKey;

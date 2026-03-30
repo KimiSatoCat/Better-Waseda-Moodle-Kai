@@ -1056,5 +1056,11 @@
     "word_counter_tooltip": {
         "message": "Click to switch between character count and word count",
         "description": "文字数カウンタに表示するメッセージ"
+    },
+    "options_page_section_others_dark_mode_enabled": {
+        "message": "Dark mode"
+    },
+    "options_page_section_others_dark_mode_enabled_description": {
+        "message": "Switch the entire page to dark mode. You can also toggle from the Light/Dark button in the navigation bar."
     }
 }

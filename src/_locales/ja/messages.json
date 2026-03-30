@@ -1056,5 +1056,11 @@
     "word_counter_tooltip": {
         "message": "クリックして文字数/単語数を切り替え",
         "description": "文字数カウンタに表示するメッセージ"
+    },
+    "options_page_section_others_dark_mode_enabled": {
+        "message": "ダークモード"
+    },
+    "options_page_section_others_dark_mode_enabled_description": {
+        "message": "ページ全体をダークモードに切り替えます。ナビゲーションバーの「ライト/ダーク」ボタンでも切り替えられます。"
     }
 }

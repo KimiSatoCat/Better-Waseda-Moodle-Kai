@@ -82,6 +82,12 @@ export default {
                     message="options_page_section_others_disable_fast_back_and_forward"
                     description="options_page_section_others_disable_fast_back_and_forward_description"
                 />
+                <Divider />
+                <ConfigToggleOption
+                    configKey={ConfigKey.DarkModeEnabled}
+                    message="options_page_section_others_dark_mode_enabled"
+                    description="options_page_section_others_dark_mode_enabled_description"
+                />
             </List>
         );
     },

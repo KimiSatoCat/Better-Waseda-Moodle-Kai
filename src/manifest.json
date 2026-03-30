@@ -2,7 +2,7 @@
     "name": "__MSG_extension_name__",
     "short_name": "__MSG_extension_shortname__",
     "description": "__MSG_extension_description__",
-    "version": "0.9.5",
+    "version": "0.9.6",
     "author": "mkihr-ojisan",
     "homepage_url": "https://github.com/mkihr-ojisan/better-waseda-moodle",
     "manifest_version": 3,
@@ -14,18 +14,29 @@
         "__chrome__128": "res/images/icon-128.png"
     },
     "background": {
-        "__firefox__scripts": ["background.js"],
+        "__firefox__scripts": [
+            "background.js"
+        ],
         "__chrome__service_worker": "background.js"
     },
     "content_scripts": [
         {
-            "matches": ["https://wsdmoodle.waseda.jp/*", "https://www.wsl.waseda.jp/syllabus/JAA104.php*"],
-            "js": ["content.js"],
+            "matches": [
+                "https://wsdmoodle.waseda.jp/*",
+                "https://www.wsl.waseda.jp/syllabus/JAA104.php*"
+            ],
+            "js": [
+                "content.js"
+            ],
             "run_at": "document_end"
         },
         {
-            "matches": ["https://login.microsoftonline.com/b3865172-9887-4b3a-89ff-95a35b92f4c3/*"],
-            "js": ["common/auto-login/auto-login-checkbox.js"],
+            "matches": [
+                "https://login.microsoftonline.com/b3865172-9887-4b3a-89ff-95a35b92f4c3/*"
+            ],
+            "js": [
+                "common/auto-login/auto-login-checkbox.js"
+            ],
             "run_at": "document_end"
         }
     ],
@@ -46,7 +57,10 @@
         "declarativeNetRequestWithHostAccess",
         "offscreen"
     ],
-    "host_permissions": ["https://login.microsoftonline.com/*", "*://*.waseda.jp/*"],
+    "host_permissions": [
+        "https://login.microsoftonline.com/*",
+        "*://*.waseda.jp/*"
+    ],
     "web_accessible_resources": [
         {
             "resources": [
@@ -55,19 +69,33 @@
                 "assignment-filename/inject.js",
                 "faster-back-and-forward/inject.js"
             ],
-            "matches": ["https://wsdmoodle.waseda.jp/*"]
+            "matches": [
+                "https://wsdmoodle.waseda.jp/*"
+            ]
         },
         {
-            "resources": ["fix-syllabus-link/inject.js"],
-            "matches": ["https://www.wsl.waseda.jp/*"]
+            "resources": [
+                "fix-syllabus-link/inject.js"
+            ],
+            "matches": [
+                "https://www.wsl.waseda.jp/*"
+            ]
         },
         {
-            "resources": ["fix-portal-link/inject.js"],
-            "matches": ["https://coursereg.waseda.jp/*"]
+            "resources": [
+                "fix-portal-link/inject.js"
+            ],
+            "matches": [
+                "https://coursereg.waseda.jp/*"
+            ]
         },
         {
-            "resources": ["res/videos/dummy-video.mp4"],
-            "matches": ["<all_urls>"]
+            "resources": [
+                "res/videos/dummy-video.mp4"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
         }
     ],
     "__firefox__browser_specific_settings": {

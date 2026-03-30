@@ -115,6 +115,8 @@ export enum ConfigKey {
     WordCounterEnabled = 45,
     /** unloadイベントを無効化する */
     FasterBackAndForward = 46,
+    /** ダークモードを有効にする */
+    DarkModeEnabled = 48,
 }
 
 /** configの値の型を定義する。オブジェクトを圧縮するのに使用する。 */
@@ -282,6 +284,7 @@ export const CONFIG_VALUE_TYPE_DEF = {
     [ConfigKey.BlockTracking]: "boolean",
     [ConfigKey.WordCounterEnabled]: "boolean",
     [ConfigKey.FasterBackAndForward]: "boolean",
+    [ConfigKey.DarkModeEnabled]: "boolean",
 } as const satisfies Record<ConfigKey, TypeDef>;
 
 export type ConfigValue<T extends ConfigKey> = TypeOfTypeDef<(typeof CONFIG_VALUE_TYPE_DEF)[T]>;
@@ -344,6 +347,7 @@ export const CONFIG_DEFAULT_VALUES = {
     [ConfigKey.BlockTracking]: false,
     [ConfigKey.WordCounterEnabled]: true,
     [ConfigKey.FasterBackAndForward]: true,
+    [ConfigKey.DarkModeEnabled]: false,
 } satisfies { [K in ConfigKey]: ConfigValue<K> };
 
 let cache: any = undefined;

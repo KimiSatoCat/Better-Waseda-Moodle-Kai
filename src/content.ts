@@ -8,10 +8,35 @@ assertExtensionContext(["content_script", "extension_page"]);
 // Q. Webpackのcode splittingを使えばいいじゃん
 // A. コンテンツスクリプト上ではWebpackのchunkをロードする機能が動かなくて……
 (async () => {
-    const sessionKey = document
-        .querySelector('a[href^="https://wsdmoodle.waseda.jp/login/logout.php?sesskey="]')
+    /**
+     * Moodle 4.xではsesskey取得方法が複数あるため，順番にフォールバックする。
+     *
+     * 方法1: インラインscriptタグ内のM.cfg.sesskey
+     *   Moodleはすべての認証済みページで<script>内にM.cfg = {..., "sesskey": "XXXX", ...}を出力する。
+     *   コンテンツスクリプトはwindow.M に直接アクセスできないが，scriptタグのtextContentは読める。
+     *
+     * 方法2: ログアウトリンクのhref属性
+     *   Moodle 4.x Boostテーマではユーザーメニュー内に <a href=".../logout.php?sesskey=..."> が依然存在する。
+     *   ただしMoodle 4.4でPOSTフォームに変更された場合を考慮し，方法1を優先する。
+     *
+     * 方法3: フォーム内のhidden input
+     *   各種アクションフォームには <input name="sesskey" type="hidden" value="..."> が含まれる。
+     */
+    const sessionKeyFromScript = Array.from(document.querySelectorAll<HTMLScriptElement>("script:not([src])"))
+        .map((s) => s.textContent?.match(/"sesskey"\s*:\s*"([^"]+)"/)?.[1])
+        .find(Boolean);
+
+    const sessionKeyFromLogout = document
+        .querySelector('a[href*="login/logout.php?sesskey="]')
         ?.getAttribute("href")
-        ?.match(/sesskey=(.*)$/)?.[1];
+        ?.match(/sesskey=([^&"]+)/)?.[1];
+
+    const sessionKeyFromForm = (
+        document.querySelector<HTMLInputElement>('input[name="sesskey"][type="hidden"]')
+    )?.value;
+
+    const sessionKey = sessionKeyFromScript ?? sessionKeyFromLogout ?? sessionKeyFromForm;
+
     if (sessionKey) {
         // セッションキーが要る機能もあると思うのでawaitする
         await call("setSessionKeyCache", sessionKey);
@@ -19,6 +44,9 @@ assertExtensionContext(["content_script", "extension_page"]);
 
     switch (location.host) {
         case "wsdmoodle.waseda.jp":
+            // ダークモードは wsdmoodle.waseda.jp の全ページで有効にする
+            import("./dark-mode/content");
+
             switch (location.pathname) {
                 case "/my/":
                 case "/my/index.php":

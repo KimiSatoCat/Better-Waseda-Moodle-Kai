@@ -1,0 +1,367 @@
+/*
+ * Better Waseda Moodle - Dark Mode
+ * Moodle 4.x (Boost テーマ) 向け包括的ダークモード CSS
+ *
+ * 適用対象:
+ *   - body, ページ全体の背景・文字色
+ *   - ナビゲーションバー（上部・サイド）
+ *   - カード・ブロック
+ *   - フォーム要素
+ *   - テーブル
+ *   - モーダル・ドロップダウン
+ *   - コース内コンテンツ
+ */
+
+/* ─────────────────────────────────────────────
+   CSS カスタムプロパティ（テーマカラー定義）
+───────────────────────────────────────────── */
+.bwm-dark-mode {
+    --bwm-dark-bg:          #1a1b2e;
+    --bwm-dark-bg-card:     #252638;
+    --bwm-dark-bg-elevated: #2e2f47;
+    --bwm-dark-bg-input:    #2a2b40;
+    --bwm-dark-border:      #3a3b54;
+    --bwm-dark-text:        #d8d9f0;
+    --bwm-dark-text-muted:  #9899b8;
+    --bwm-dark-link:        #7eb4ff;
+    --bwm-dark-nav-bg:      #12132a;
+    --bwm-dark-nav-text:    #c8c9e0;
+    --bwm-dark-accent:      #5c6bc0;
+}
+
+/* ─────────────────────────────────────────────
+   ページ基盤
+───────────────────────────────────────────── */
+.bwm-dark-mode body,
+.bwm-dark-mode #page-wrapper,
+.bwm-dark-mode #page,
+.bwm-dark-mode .pagelayout-standard,
+.bwm-dark-mode #page-content {
+    background-color: var(--bwm-dark-bg) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .bg-white,
+.bwm-dark-mode .bg-light,
+.bwm-dark-mode [class*="bg-white"],
+.bwm-dark-mode .page-header-wrapper {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+/* ─────────────────────────────────────────────
+   上部ナビゲーションバー
+───────────────────────────────────────────── */
+.bwm-dark-mode .navbar,
+.bwm-dark-mode #usernavigation,
+.bwm-dark-mode .navbar-dark {
+    background-color: var(--bwm-dark-nav-bg) !important;
+    border-bottom: 1px solid var(--bwm-dark-border) !important;
+}
+
+.bwm-dark-mode .navbar .nav-link,
+.bwm-dark-mode .navbar .navbar-brand,
+.bwm-dark-mode #usernavigation .nav-link,
+.bwm-dark-mode .popover-region-toggle {
+    color: var(--bwm-dark-nav-text) !important;
+}
+
+.bwm-dark-mode .navbar .nav-link:hover,
+.bwm-dark-mode #usernavigation .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* セカンダリナビゲーション（HOME ダッシュボード マイコース Calendar ライト/ダーク） */
+.bwm-dark-mode .secondary-navigation,
+.bwm-dark-mode .primary-navigation,
+.bwm-dark-mode nav.moremenu {
+    background-color: var(--bwm-dark-nav-bg) !important;
+    border-bottom: 1px solid var(--bwm-dark-border) !important;
+}
+
+.bwm-dark-mode .secondary-navigation .nav-link,
+.bwm-dark-mode .primary-navigation .nav-link,
+.bwm-dark-mode nav.moremenu .nav-link,
+.bwm-dark-mode .navigation .nav-link {
+    color: var(--bwm-dark-nav-text) !important;
+}
+
+.bwm-dark-mode .secondary-navigation .nav-link:hover,
+.bwm-dark-mode .secondary-navigation .nav-link.active,
+.bwm-dark-mode nav.moremenu .nav-link:hover,
+.bwm-dark-mode nav.moremenu [aria-current="true"] {
+    color: #ffffff !important;
+    background-color: rgba(92, 107, 192, 0.3) !important;
+    border-radius: 4px !important;
+}
+
+/* ─────────────────────────────────────────────
+   カード・ブロック
+───────────────────────────────────────────── */
+.bwm-dark-mode .card,
+.bwm-dark-mode .block,
+.bwm-dark-mode .block_starredcourses,
+.bwm-dark-mode [data-block] {
+    background-color: var(--bwm-dark-bg-card) !important;
+    border-color: var(--bwm-dark-border) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .card-header,
+.bwm-dark-mode .card-footer {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    border-color: var(--bwm-dark-border) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .card-body {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+/* ─────────────────────────────────────────────
+   見出し・テキスト
+───────────────────────────────────────────── */
+.bwm-dark-mode h1,
+.bwm-dark-mode h2,
+.bwm-dark-mode h3,
+.bwm-dark-mode h4,
+.bwm-dark-mode h5,
+.bwm-dark-mode h6,
+.bwm-dark-mode .h1,
+.bwm-dark-mode .h2,
+.bwm-dark-mode .h3,
+.bwm-dark-mode .h4,
+.bwm-dark-mode .h5,
+.bwm-dark-mode .h6 {
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .text-dark,
+.bwm-dark-mode .text-body {
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .text-muted,
+.bwm-dark-mode small {
+    color: var(--bwm-dark-text-muted) !important;
+}
+
+.bwm-dark-mode a:not(.btn):not(.nav-link):not(.dropdown-item) {
+    color: var(--bwm-dark-link) !important;
+}
+
+.bwm-dark-mode a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
+    color: #aaccff !important;
+}
+
+/* ─────────────────────────────────────────────
+   フォーム要素
+───────────────────────────────────────────── */
+.bwm-dark-mode input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="submit"]):not([type="button"]),
+.bwm-dark-mode textarea,
+.bwm-dark-mode select,
+.bwm-dark-mode .form-control,
+.bwm-dark-mode .custom-select {
+    background-color: var(--bwm-dark-bg-input) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+.bwm-dark-mode input::placeholder,
+.bwm-dark-mode textarea::placeholder {
+    color: var(--bwm-dark-text-muted) !important;
+}
+
+.bwm-dark-mode .input-group-text {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+/* ─────────────────────────────────────────────
+   テーブル
+───────────────────────────────────────────── */
+.bwm-dark-mode table,
+.bwm-dark-mode .table {
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .table td,
+.bwm-dark-mode .table th,
+.bwm-dark-mode td,
+.bwm-dark-mode th {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+.bwm-dark-mode .table-striped tbody tr:nth-of-type(odd) td {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+}
+
+.bwm-dark-mode .table-hover tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* ─────────────────────────────────────────────
+   ドロップダウン・モーダル
+───────────────────────────────────────────── */
+.bwm-dark-mode .dropdown-menu,
+.bwm-dark-mode .popover,
+.bwm-dark-mode .popover-content {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    border-color: var(--bwm-dark-border) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .dropdown-item {
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .dropdown-item:hover,
+.bwm-dark-mode .dropdown-item:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+.bwm-dark-mode .dropdown-divider {
+    border-color: var(--bwm-dark-border) !important;
+}
+
+.bwm-dark-mode .modal-content,
+.bwm-dark-mode .modal-header,
+.bwm-dark-mode .modal-body,
+.bwm-dark-mode .modal-footer {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+/* ─────────────────────────────────────────────
+   リスト・サイドバー
+───────────────────────────────────────────── */
+.bwm-dark-mode .list-group-item,
+.bwm-dark-mode .list-unstyled li {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+.bwm-dark-mode #nav-drawer,
+.bwm-dark-mode [data-region="drawer"],
+.bwm-dark-mode .drawer {
+    background-color: var(--bwm-dark-nav-bg) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+.bwm-dark-mode #nav-drawer .nav-link,
+.bwm-dark-mode .drawer .nav-link {
+    color: var(--bwm-dark-nav-text) !important;
+}
+
+/* ─────────────────────────────────────────────
+   コース・アクティビティ
+───────────────────────────────────────────── */
+.bwm-dark-mode #page-navbar,
+.bwm-dark-mode .breadcrumb {
+    background-color: transparent !important;
+}
+
+.bwm-dark-mode .breadcrumb-item,
+.bwm-dark-mode .breadcrumb-item a,
+.bwm-dark-mode .breadcrumb-item.active {
+    color: var(--bwm-dark-text-muted) !important;
+}
+
+.bwm-dark-mode .activity-wrapper,
+.bwm-dark-mode .activity,
+.bwm-dark-mode .section {
+    background-color: var(--bwm-dark-bg-card) !important;
+    color: var(--bwm-dark-text) !important;
+    border-color: var(--bwm-dark-border) !important;
+}
+
+.bwm-dark-mode .course-description-item {
+    background-color: var(--bwm-dark-bg-elevated) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+/* ─────────────────────────────────────────────
+   アラート・バッジ
+───────────────────────────────────────────── */
+.bwm-dark-mode .alert-info {
+    background-color: rgba(92, 107, 192, 0.25) !important;
+    border-color: var(--bwm-dark-accent) !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .alert-warning {
+    background-color: rgba(255, 167, 38, 0.2) !important;
+    border-color: #ffa726 !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+.bwm-dark-mode .alert-danger {
+    background-color: rgba(239, 83, 80, 0.2) !important;
+    border-color: #ef5350 !important;
+    color: var(--bwm-dark-text) !important;
+}
+
+/* ─────────────────────────────────────────────
+   フッター
+───────────────────────────────────────────── */
+.bwm-dark-mode #page-footer,
+.bwm-dark-mode footer {
+    background-color: var(--bwm-dark-nav-bg) !important;
+    color: var(--bwm-dark-text-muted) !important;
+    border-top: 1px solid var(--bwm-dark-border) !important;
+}
+
+/* ─────────────────────────────────────────────
+   スクロールバー
+───────────────────────────────────────────── */
+.bwm-dark-mode ::-webkit-scrollbar {
+    background-color: var(--bwm-dark-bg) !important;
+    width: 10px;
+}
+
+.bwm-dark-mode ::-webkit-scrollbar-thumb {
+    background-color: var(--bwm-dark-border) !important;
+    border-radius: 5px;
+}
+
+.bwm-dark-mode ::-webkit-scrollbar-thumb:hover {
+    background-color: #555570 !important;
+}
+
+/* ─────────────────────────────────────────────
+   ライト/ダーク トグルボタン（ナビゲーション内）
+───────────────────────────────────────────── */
+#bwm-darkmode-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 12px;
+    font-size: 0.875rem;
+    user-select: none;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+
+#bwm-darkmode-toggle:hover {
+    opacity: 0.8;
+}
+
+#bwm-darkmode-toggle .bwm-toggle-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* ダークモード時のトグルボタン調整 */
+.bwm-dark-mode #bwm-darkmode-toggle {
+    color: var(--bwm-dark-nav-text) !important;
+}

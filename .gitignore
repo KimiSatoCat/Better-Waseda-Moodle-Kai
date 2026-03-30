@@ -2,3 +2,8 @@ node_modules/
 dist/
 packages/
 .vscode
+
+# 環境変数ファイル（絶対にコミットしないこと）
+.env
+.env.local
+.env.production

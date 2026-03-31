@@ -1,5 +1,6 @@
 import { ConfigKey, getConfig, initConfig, setConfig } from "@/common/config/config";
 import "./dark-mode.css";
+import { injectBusNavItem, SCHOOL_BUS_NAV_ID } from "../school-bus/content";
 
 const DARK_CLASS = "bwm-dark-mode";
 const TOGGLE_ID = "bwm-darkmode-toggle";
@@ -33,7 +34,7 @@ function suppressNativeInquiryLinks(): void {
             const a = el.tagName === "A" ? el as HTMLAnchorElement : el.querySelector<HTMLAnchorElement>("a");
             if (!a) return;
             // 我々のリンクは除外
-            if (a.id === INQUIRY_ID || a.id === TOGGLE_ID) return;
+            if (a.id === INQUIRY_ID || a.id === TOGGLE_ID || a.id === SCHOOL_BUS_NAV_ID) return;
             // テキストに「お問い合わせ」を含む場合は非表示
             const text = (a.textContent ?? "").replace(/\s/g, "");
             if (text.includes("お問い合わせ")) {
@@ -75,7 +76,7 @@ function makeNavItem(id: string, html: string): HTMLLIElement {
     return li;
 }
 
-function inject(navList: HTMLUListElement, isDark: boolean): void {
+async function inject(navList: HTMLUListElement, isDark: boolean): Promise<void> {
     navList.dataset.bwm = "1";
 
     // ── ライト/ダーク トグル ──
@@ -96,6 +97,10 @@ function inject(navList: HTMLUListElement, isDark: boolean): void {
     inquiryA.setAttribute("rel", "noopener noreferrer");
     inquiryA.addEventListener("click", (e) => { e.stopPropagation(); });
     navList.appendChild(inquiryLi);
+
+    // スクールバス時刻表ボタン（お問い合わせの前に挿入）
+    // 設定がONのときのみ表示
+    await injectBusNavItem(navList, makeNavItem);
 }
 
 (async () => {
@@ -105,7 +110,7 @@ function inject(navList: HTMLUListElement, isDark: boolean): void {
 
     let injected = false;
 
-    function tryInject(): boolean {
+    async function tryInject(): Promise<boolean> {
         if (!injected) {
             if (document.getElementById(TOGGLE_ID) && document.getElementById(INQUIRY_ID)) {
                 injected = true;
@@ -125,9 +130,9 @@ function inject(navList: HTMLUListElement, isDark: boolean): void {
     tryInject();
 
     // DOM変化を監視：Moodleがナビを動的更新するたびに非表示処理を再実行
-    const observer = new MutationObserver(() => {
+    const observer = new MutationObserver(async () => {
         if (!injected) {
-            tryInject();
+            await tryInject();
         } else {
             suppressNativeInquiryLinks();
         }
@@ -135,8 +140,8 @@ function inject(navList: HTMLUListElement, isDark: boolean): void {
     observer.observe(document.body, { childList: true, subtree: true });
 
     // 念のため3秒後にも再実行（Moodleの遅延描画対応）
-    setTimeout(() => {
-        if (!injected) tryInject();
+    setTimeout(async () => {
+        if (!injected) await tryInject();
         suppressNativeInquiryLinks();
     }, 3000);
 })();

@@ -88,6 +88,12 @@ export default {
                     message="options_page_section_others_dark_mode_enabled"
                     description="options_page_section_others_dark_mode_enabled_description"
                 />
+                <Divider />
+                <ConfigToggleOption
+                    configKey={ConfigKey.SchoolBusEnabled}
+                    message="options_page_section_others_school_bus_enabled"
+                    description="options_page_section_others_school_bus_enabled_description"
+                />
             </List>
         );
     },

@@ -1062,5 +1062,11 @@
     },
     "options_page_section_others_dark_mode_enabled_description": {
         "message": "ページ全体をダークモードに切り替えます。ナビゲーションバーの「ライト/ダーク」ボタンでも切り替えられます。"
+    },
+    "options_page_section_others_school_bus_enabled": {
+        "message": "🚌 スクールバス時刻表（所沢キャンパス）"
+    },
+    "options_page_section_others_school_bus_enabled_description": {
+        "message": "ナビバーに「🚌 バス」ボタンを追加します。クリックすると小手指↔所沢キャンパス間のスクールバス最新時刻表PDFリンクを表示します。毎月10日・20日・30日に自動更新します。"
     }
 }

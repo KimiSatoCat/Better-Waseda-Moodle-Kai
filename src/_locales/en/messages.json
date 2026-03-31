@@ -1062,5 +1062,11 @@
     },
     "options_page_section_others_dark_mode_enabled_description": {
         "message": "Switch the entire page to dark mode. You can also toggle from the Light/Dark button in the navigation bar."
+    },
+    "options_page_section_others_school_bus_enabled": {
+        "message": "🚌 School Bus Timetable (Tokorozawa Campus)"
+    },
+    "options_page_section_others_school_bus_enabled_description": {
+        "message": "Adds a 🚌 Bus button to the nav bar. Click to show the latest school bus timetable PDF links for Kotesashi↔Tokorozawa Campus. Auto-updates on the 10th, 20th, and 30th of each month."
     }
 }

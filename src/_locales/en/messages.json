@@ -1068,5 +1068,56 @@
     },
     "options_page_section_others_school_bus_enabled_description": {
         "message": "Adds a 🚌 Bus button to the nav bar. Click to show the latest school bus timetable PDF links for Kotesashi↔Tokorozawa Campus. Auto-updates on the 10th, 20th, and 30th of each month."
+    },
+    "nav_dark_mode": {
+        "message": "🌙 Dark"
+    },
+    "nav_light_mode": {
+        "message": "☀️ Light"
+    },
+    "nav_inquiry": {
+        "message": "📬 Contact"
+    },
+    "nav_school_bus": {
+        "message": "🚌 Bus"
+    },
+    "bus_panel_title": {
+        "message": "🚌 School Bus Timetable"
+    },
+    "bus_panel_regular": {
+        "message": "📅 Regular Timetable"
+    },
+    "bus_panel_special": {
+        "message": "⚠️ Special / Vacation Schedule"
+    },
+    "bus_panel_updates": {
+        "message": "📋 Latest Updates"
+    },
+    "bus_panel_loading": {
+        "message": "Fetching latest info..."
+    },
+    "bus_panel_error": {
+        "message": "Failed to fetch bus info."
+    },
+    "bus_panel_open_page": {
+        "message": "🔗 View on Waseda University official page"
+    },
+    "bus_panel_fetched": {
+        "message": "Fetched on"
+    },
+    "bus_panel_disclaimer": {
+        "message": "※ Data sourced from Waseda University official website"
+    },
+    "badge_regular": {
+        "message": "Regular"
+    },
+    "badge_special": {
+        "message": "Special"
+    },
+    "badge_vacation": {
+        "message": "Vacation"
+    },
+    "badge_other": {
+        "message": "Other"
     }
 }

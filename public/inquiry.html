@@ -3,74 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>お問い合わせ – Better Waseda Moodle 改</title>
+  <title>Contact / お問い合わせ – Better Waseda Moodle 改</title>
   <script src="https://js.stripe.com/v3/"></script>
   <link rel="stylesheet" href="inquiry.css" />
 </head>
 <body>
 
+<!-- ═══ 言語切替ボタン ═══ -->
+<div id="lang-switch" style="position:fixed;top:12px;right:12px;z-index:9998;display:flex;gap:6px;">
+  <button onclick="setLang('ja')" id="btn-ja" style="padding:5px 12px;border-radius:20px;border:2px solid #8b1a2a;background:#8b1a2a;color:#fff;font-size:0.82rem;font-weight:700;cursor:pointer;">日本語</button>
+  <button onclick="setLang('en')" id="btn-en" style="padding:5px 12px;border-radius:20px;border:2px solid #8b1a2a;background:#fff;color:#8b1a2a;font-size:0.82rem;font-weight:700;cursor:pointer;">English</button>
+</div>
+
 <!-- ═══ 免責事項モーダル ═══ -->
 <div id="disclaimer-modal" class="modal-backdrop">
   <div class="modal-box">
-    <h2>📋 ご利用前にご確認ください</h2>
+    <h2 id="m-title">📋 ご利用前にご確認ください</h2>
     <div class="modal-body">
-      <p><strong>■ サービスの独立性</strong><br>
-      本フォームおよびBetter Waseda Moodle 改は、<strong>早稲田大学・大学事務局・Moodle Project・その他大学関係機関とは一切無関係の</strong>個人開発プロジェクトです。名称中の「Waseda Moodle」は動作対象を説明するための叙述的使用であり、商標権の侵害にはあたりません。</p>
-      <p><strong>■ 個人情報の取り扱い</strong><br>
-      入力いただいた情報（氏名・所属・メールアドレス・要望内容）は、開発者への要望連絡のみに使用します。AI要約後に開発者専用チャンネルへ通知され、外部DBへの永続保存は行いません。第三者への提供は一切行いません。</p>
-      <p><strong>■ お問い合わせ料金（¥500）について</strong><br>
-      スパム防止・サービス維持を目的とした料金です。支払いはStripe社の決済システムを通じて安全に処理されます。決済完了後の返金は原則対応しておりません。</p>
-      <p><strong>■ 免責事項</strong><br>
-      本サービスはWaseda Moodleの公式サービスではありません。大学システムの仕様変更等による機能停止について開発者は責任を負いません。本サービスの利用はご自身の判断と責任において行ってください。</p>
+      <p><strong id="m-s1h">■ サービスの独立性</strong><br><span id="m-s1b">本フォームおよびBetter Waseda Moodle 改は、<strong>早稲田大学・大学事務局・Moodle Project・その他大学関係機関とは一切無関係の</strong>個人開発プロジェクトです。名称中の「Waseda Moodle」は動作対象を説明するための叙述的使用であり、商標権の侵害にはあたりません。</span></p>
+      <p><strong id="m-s2h">■ 個人情報の取り扱い</strong><br><span id="m-s2b">入力いただいた情報（氏名・所属・メールアドレス・要望内容）は、開発者への要望連絡のみに使用します。AI要約後に開発者専用チャンネルへ通知され、外部DBへの永続保存は行いません。第三者への提供は一切行いません。</span></p>
+      <p><strong id="m-s3h">■ お問い合わせ料金（¥500）について</strong><br><span id="m-s3b">スパム防止・サービス維持を目的とした料金です。支払いはStripe社の決済システムを通じて安全に処理されます。決済完了後の返金は原則対応しておりません。</span></p>
+      <p><strong id="m-s4h">■ 免責事項</strong><br><span id="m-s4b">本サービスはWaseda Moodleの公式サービスではありません。大学システムの仕様変更等による機能停止について開発者は責任を負いません。本サービスの利用はご自身の判断と責任において行ってください。</span></p>
     </div>
     <div class="modal-actions">
-      <button id="btn-agree" class="btn-primary">✅ 同意してフォームを開く</button>
-      <button id="btn-close-modal" class="btn-secondary">閉じる</button>
+      <button id="btn-agree" class="btn-primary" onclick="agreeAndOpen()">✅ <span id="m-agree">同意してフォームを開く</span></button>
+      <button class="btn-secondary" onclick="window.close()||history.back()"><span id="m-close">閉じる</span></button>
     </div>
-    <p class="modal-footer-note">早稲田大学・Moodle Projectとは一切関係ありません</p>
+    <p class="modal-footer-note" id="m-footer">早稲田大学・Moodle Projectとは一切関係ありません</p>
   </div>
 </div>
 
-<!-- ═══ フォーム本体（モーダル同意後に表示） ═══ -->
+<!-- ═══ フォーム本体 ═══ -->
 <div id="main-content" class="hidden container">
-
   <div class="header">
-    <h1>📬 お問い合わせ・要望</h1>
-    <p>Better Waseda Moodle 改 拡張機能に関するご要望・ご意見をお送りください。</p>
-    <p class="sub-note">※ 早稲田大学・Moodle とは無関係の個人開発プロジェクトです</p>
+    <h1 id="h-title">📬 お問い合わせ・要望</h1>
+    <p id="h-sub">Better Waseda Moodle 改 拡張機能に関するご要望・ご意見をお送りください。</p>
+    <p class="sub-note" id="h-note">※ 早稲田大学・Moodle とは無関係の個人開発プロジェクトです</p>
   </div>
 
   <div class="card" id="form-view">
-    <h2>📝 お問い合わせ内容</h2>
-
+    <h2 id="f-title">📝 お問い合わせ内容</h2>
     <div class="form-group">
-      <label>お名前 <span class="optional">（任意）</span></label>
+      <label id="l-name">お名前 <span class="optional">（任意）</span></label>
       <input type="text" id="inp-name" placeholder="早稲田 太郎" maxlength="50" />
     </div>
     <div class="form-group">
-      <label>所属（学部・研究科など） <span class="optional">（任意）</span></label>
+      <label id="l-affil">所属（学部・研究科など） <span class="optional">（任意）</span></label>
       <input type="text" id="inp-affiliation" placeholder="例：〇〇学部　〇〇学科" maxlength="100" />
     </div>
     <div class="form-group">
-      <label>メールアドレス <span class="req">*</span></label>
+      <label id="l-email">メールアドレス <span class="req">*</span></label>
       <input type="email" id="inp-email" placeholder="xxx@waseda.jp" maxlength="200" />
     </div>
     <div class="form-group">
-      <label>ご要望・お問い合わせ内容 <span class="req">*</span>（2000文字以内）</label>
+      <label id="l-content">ご要望・お問い合わせ内容 <span class="req">*</span>（2000文字以内）</label>
       <textarea id="inp-content" placeholder="具体的なご要望をお書きください..." maxlength="2000"></textarea>
       <div class="char-count"><span id="char-count">0</span>/2000</div>
     </div>
 
-    <!-- 支払い -->
     <div class="section-divider"></div>
-    <h2>💳 お問い合わせ料（¥500）</h2>
-    <p class="price-note">スパム防止・継続的なメンテナンス費用として活用いたします。クーポンをお持ちの方は無料でご送信いただけます。</p>
+    <h2 id="f-pay-title">💳 お問い合わせ料（¥500）</h2>
+    <p class="price-note" id="f-pay-note">スパム防止・継続的なメンテナンス費用として活用いたします。クーポンをお持ちの方は無料でご送信いただけます。</p>
 
     <div class="payment-tabs">
-      <button class="tab-btn active" id="tab-btn-stripe">💳 カードで支払い</button>
-      <button class="tab-btn" id="tab-btn-coupon">🎟️ クーポンコード</button>
+      <button class="tab-btn active" id="tab-btn-stripe">💳 <span id="tab-card-label">カードで支払い</span></button>
+      <button class="tab-btn" id="tab-btn-coupon">🎟️ <span id="tab-coupon-label">クーポンコード</span></button>
     </div>
-
     <div id="tab-stripe" class="tab-panel active">
       <div id="card-element"></div>
       <div id="card-errors" class="field-error"></div>
@@ -78,27 +76,25 @@
     <div id="tab-coupon" class="tab-panel">
       <div class="coupon-row">
         <input type="password" id="inp-coupon" placeholder="クーポンコードを入力" autocomplete="off" />
-        <button id="btn-apply-coupon">適用</button>
+        <button id="btn-apply-coupon"><span id="btn-apply-label">適用</span></button>
       </div>
       <div id="coupon-status" class="coupon-status"></div>
     </div>
 
     <div id="form-error" class="form-error"></div>
-    <button id="btn-submit" class="btn-submit">送信する（¥500）</button>
+    <button id="btn-submit" class="btn-submit"><span id="btn-submit-label">送信する（¥500）</span></button>
   </div>
 
-  <!-- 完了画面 -->
   <div id="success-view" class="card hidden success-card">
     <div class="success-emoji">🎉</div>
-    <h2>ありがとうございます！</h2>
-    <p>お問い合わせを受け付けました。いただいたご要望をもとに、Waseda Moodle がより使いやすくなるよう個人開発者として継続的に改善に取り組んでまいります。</p>
-    <small>※ 本サービスは早稲田大学・Moodle Project とは無関係の個人開発プロジェクトです。ご返信は原則行っておりませんが、ご要望は開発の参考にさせていただきます。</small>
+    <h2 id="s-title">ありがとうございます！</h2>
+    <p id="s-body">お問い合わせを受け付けました。いただいたご要望をもとに、Waseda Moodle がより使いやすくなるよう個人開発者として継続的に改善に取り組んでまいります。</p>
+    <small id="s-note">※ 本サービスは早稲田大学・Moodle Project とは無関係の個人開発プロジェクトです。</small>
   </div>
 
-  <!-- 寄付セクション -->
   <div class="donate-card">
-    <h2>☕ 開発を応援する（任意寄付）</h2>
-    <p>Better Waseda Moodle 改 はすべて個人開発・無償提供です。いただいたサポートはWaseda Moodleをより快適にするための機能開発・サーバー維持費に充てさせていただきます。</p>
+    <h2 id="d-title">☕ 開発を応援する（任意寄付）</h2>
+    <p id="d-body">Better Waseda Moodle 改 はすべて個人開発・無償提供です。いただいたサポートはWaseda Moodleをより快適にするための機能開発・サーバー維持費に充てさせていただきます。</p>
     <div class="donate-amounts">
       <button class="amount-btn selected" data-amount="200">¥200</button>
       <button class="amount-btn" data-amount="500">¥500</button>
@@ -106,14 +102,13 @@
       <button class="amount-btn" data-amount="3000">¥3,000</button>
       <button class="amount-btn" data-amount="5000">¥5,000</button>
     </div>
-    <button id="btn-donate" class="btn-donate">☕ ¥200 を寄付する</button>
-    <p class="donate-disclaimer">
+    <button id="btn-donate" class="btn-donate">☕ ¥200 <span id="d-btn-label">を寄付する</span></button>
+    <p class="donate-disclaimer" id="d-disclaimer">
       ※ 本サービスは早稲田大学・大学事務・Moodle Projectとは一切関係のない個人開発プロジェクトです。<br>
       ※ 寄付は完全に任意です。いかなる特典・優遇も伴いません。<br>
       ※ 決済完了後の払い戻しは原則対応しておりません（Stripe決済規約に準じます）。
     </p>
   </div>
-
 </div>
 
 <script src="inquiry.js"></script>

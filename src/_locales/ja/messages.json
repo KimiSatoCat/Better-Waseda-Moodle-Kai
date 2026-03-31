@@ -1068,5 +1068,56 @@
     },
     "options_page_section_others_school_bus_enabled_description": {
         "message": "ナビバーに「🚌 バス」ボタンを追加します。クリックすると小手指↔所沢キャンパス間のスクールバス最新時刻表PDFリンクを表示します。毎月10日・20日・30日に自動更新します。"
+    },
+    "nav_dark_mode": {
+        "message": "🌙 ダーク"
+    },
+    "nav_light_mode": {
+        "message": "☀️ ライト"
+    },
+    "nav_inquiry": {
+        "message": "📬 お問い合わせ"
+    },
+    "nav_school_bus": {
+        "message": "🚌 バス"
+    },
+    "bus_panel_title": {
+        "message": "🚌 スクールバス時刻表"
+    },
+    "bus_panel_regular": {
+        "message": "📅 通常ダイヤ"
+    },
+    "bus_panel_special": {
+        "message": "⚠️ 特別ダイヤ・休業期間"
+    },
+    "bus_panel_updates": {
+        "message": "📋 最新更新情報"
+    },
+    "bus_panel_loading": {
+        "message": "最新情報を取得中..."
+    },
+    "bus_panel_error": {
+        "message": "情報の取得に失敗しました。"
+    },
+    "bus_panel_open_page": {
+        "message": "🔗 早稲田大学公式バスページで確認する"
+    },
+    "bus_panel_fetched": {
+        "message": "取得日"
+    },
+    "bus_panel_disclaimer": {
+        "message": "※ 早稲田大学公式サイトの情報を表示しています"
+    },
+    "badge_regular": {
+        "message": "通常"
+    },
+    "badge_special": {
+        "message": "特別"
+    },
+    "badge_vacation": {
+        "message": "休業期間"
+    },
+    "badge_other": {
+        "message": "その他"
     }
 }

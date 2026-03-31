@@ -1119,5 +1119,11 @@
     },
     "badge_other": {
         "message": "Other"
+    },
+    "options_page_section_others_holiday_notice_enabled": {
+        "message": "🔔 Holiday Class Notification"
+    },
+    "options_page_section_others_holiday_notice_enabled_description": {
+        "message": "Shows a banner at the top of Moodle when classes are held on a public holiday. You can dismiss it for the day. Please update the schedule at the beginning of each academic year."
     }
 }

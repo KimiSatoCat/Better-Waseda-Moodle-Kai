@@ -119,6 +119,8 @@ export enum ConfigKey {
     DarkModeEnabled = 48,
     /** スクールバス時刻表を表示する */
     SchoolBusEnabled = 49,
+    /** 休日授業実施通知を表示する */
+    HolidayNoticeEnabled = 50,
 }
 
 /** configの値の型を定義する。オブジェクトを圧縮するのに使用する。 */
@@ -288,6 +290,7 @@ export const CONFIG_VALUE_TYPE_DEF = {
     [ConfigKey.FasterBackAndForward]: "boolean",
     [ConfigKey.DarkModeEnabled]: "boolean",
     [ConfigKey.SchoolBusEnabled]: "boolean",
+    [ConfigKey.HolidayNoticeEnabled]: "boolean",
 } as const satisfies Record<ConfigKey, TypeDef>;
 
 export type ConfigValue<T extends ConfigKey> = TypeOfTypeDef<(typeof CONFIG_VALUE_TYPE_DEF)[T]>;
@@ -352,6 +355,7 @@ export const CONFIG_DEFAULT_VALUES = {
     [ConfigKey.FasterBackAndForward]: true,
     [ConfigKey.DarkModeEnabled]: false,
     [ConfigKey.SchoolBusEnabled]: false,
+    [ConfigKey.HolidayNoticeEnabled]: true,
 } satisfies { [K in ConfigKey]: ConfigValue<K> };
 
 let cache: any = undefined;

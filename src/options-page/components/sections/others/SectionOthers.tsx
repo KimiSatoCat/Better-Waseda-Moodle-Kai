@@ -94,6 +94,12 @@ export default {
                     message="options_page_section_others_school_bus_enabled"
                     description="options_page_section_others_school_bus_enabled_description"
                 />
+                <Divider />
+                <ConfigToggleOption
+                    configKey={ConfigKey.HolidayNoticeEnabled}
+                    message="options_page_section_others_holiday_notice_enabled"
+                    description="options_page_section_others_holiday_notice_enabled_description"
+                />
             </List>
         );
     },

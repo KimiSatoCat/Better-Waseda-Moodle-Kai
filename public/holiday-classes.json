@@ -1,0 +1,62 @@
+{
+  "_comment": "年度初めにこのファイルを更新してください。ソース: https://www.waseda.jp/fhum/ghum/student/registration/ の授業実施日一覧PDF",
+  "_lastUpdated": "2026-03-31",
+  "_academicYear": 2026,
+  "holidayClasses": [
+    {
+      "date": "2026-04-29",
+      "holiday": "昭和の日",
+      "holidayEn": "Showa Day",
+      "dayType": "Monday",
+      "dayTypeJa": "月曜日",
+      "note": "月曜日の授業を実施（昭和の日振替）",
+      "noteEn": "Monday class schedule (substitute for Showa Day)"
+    },
+    {
+      "date": "2026-05-04",
+      "holiday": "みどりの日",
+      "holidayEn": "Greenery Day",
+      "dayType": "Tuesday",
+      "dayTypeJa": "火曜日",
+      "note": "火曜日の授業を実施",
+      "noteEn": "Tuesday class schedule"
+    },
+    {
+      "date": "2026-05-05",
+      "holiday": "こどもの日",
+      "holidayEn": "Children's Day",
+      "dayType": "Wednesday",
+      "dayTypeJa": "水曜日",
+      "note": "水曜日の授業を実施",
+      "noteEn": "Wednesday class schedule"
+    },
+    {
+      "date": "2026-07-20",
+      "holiday": "海の日",
+      "holidayEn": "Marine Day",
+      "dayType": "Friday",
+      "dayTypeJa": "金曜日",
+      "note": "金曜日の授業を実施（海の日振替）",
+      "noteEn": "Friday class schedule (substitute for Marine Day)"
+    },
+    {
+      "date": "2026-11-03",
+      "holiday": "文化の日",
+      "holidayEn": "Culture Day",
+      "dayType": "Tuesday",
+      "dayTypeJa": "火曜日",
+      "note": "火曜日の授業を実施",
+      "noteEn": "Tuesday class schedule"
+    },
+    {
+      "date": "2026-11-23",
+      "holiday": "勤労感謝の日",
+      "holidayEn": "Labor Thanksgiving Day",
+      "dayType": "Monday",
+      "dayTypeJa": "月曜日",
+      "note": "月曜日の授業を実施",
+      "noteEn": "Monday class schedule"
+    }
+  ],
+  "_howToUpdate": "年度初めに大学院人間科学研究科の科目登録ページ(https://www.waseda.jp/fhum/ghum/student/registration/)から授業実施日一覧PDFを確認し、このJSONを更新してVercelにデプロイしてください。"
+}

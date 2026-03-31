@@ -1,6 +1,7 @@
 import { ConfigKey, getConfig, initConfig, setConfig } from "@/common/config/config";
 import "./dark-mode.css";
 import { injectBusNavItem, SCHOOL_BUS_NAV_ID } from "../school-bus/content";
+import { initHolidayNotice } from "../holiday-notice/content";
 
 const DARK_CLASS = "bwm-dark-mode";
 const TOGGLE_ID = "bwm-darkmode-toggle";
@@ -94,6 +95,9 @@ async function inject(navList: HTMLUListElement, isDark: boolean): Promise<void>
     await initConfig();
     const isDark = getConfig(ConfigKey.DarkModeEnabled);
     applyDarkMode(isDark);
+
+    // 休日授業実施通知
+    initHolidayNotice();
 
     let injected = false;
 

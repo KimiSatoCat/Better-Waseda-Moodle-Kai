@@ -1119,5 +1119,11 @@
     },
     "badge_other": {
         "message": "その他"
+    },
+    "options_page_section_others_holiday_notice_enabled": {
+        "message": "🔔 休日授業実施日通知"
+    },
+    "options_page_section_others_holiday_notice_enabled_description": {
+        "message": "休日にもかかわらず授業が実施される日に、Moodle上部にバナー通知を表示します。通知は「今日は表示しない」で閉じることができます。毎年4月初めに授業実施日一覧を確認して設定を更新してください。"
     }
 }

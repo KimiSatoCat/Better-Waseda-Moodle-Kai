@@ -54,6 +54,23 @@ function makeNavItem(id: string, html: string, onClick?: (e: Event) => void): HT
     return li;
 }
 
+/**
+ * ナビに既存の「お問い合わせ」リンク（Moodle標準・大学追加）を非表示にする。
+ * 我々が注入したリンク（INQUIRY_ID）は対象外。
+ */
+function hideNativeInquiryLinks(navList: HTMLUListElement): void {
+    navList.querySelectorAll<HTMLElement>("li").forEach((li) => {
+        const a = li.querySelector<HTMLAnchorElement>("a");
+        if (!a) return;
+        if (a.id === INQUIRY_ID || a.id === TOGGLE_ID) return;
+        // テキストに「お問い合わせ」「ヘルプ」「サポート」が含まれるリンクを非表示
+        const text = (a.textContent ?? "").replace(/\s/g, "");
+        if (text.includes("お問い合わせ") || text.includes("ヘルプ") || text.includes("サポート")) {
+            li.style.setProperty("display", "none", "important");
+        }
+    });
+}
+
 function inject(navList: HTMLUListElement, isDark: boolean): void {
     // navListに注入済みマーカーを付ける
     navList.dataset.bwm = "1";
@@ -77,16 +94,15 @@ function inject(navList: HTMLUListElement, isDark: boolean): void {
         `<span>📬 お問い合わせ</span>`
     );
     const inquiryLink = inquiryItem.querySelector("a")!;
-    inquiryLink.href = INQUIRY_URL;
-    inquiryLink.removeAttribute("href"); // href="#" を削除してからtarget設定
     inquiryLink.setAttribute("href", INQUIRY_URL);
     inquiryLink.setAttribute("target", "_blank");
     inquiryLink.setAttribute("rel", "noopener noreferrer");
-    // クリックイベントのデフォルト（#へのジャンプ）を無効化
-    inquiryLink.removeEventListener("click", () => {});
-    inquiryLink.onclick = null;
+    inquiryLink.onclick = (e) => { e.stopPropagation(); };
 
     navList.appendChild(inquiryItem);
+
+    // Moodle標準・大学追加の「お問い合わせ」を非表示
+    hideNativeInquiryLinks(navList);
 }
 
 (async () => {

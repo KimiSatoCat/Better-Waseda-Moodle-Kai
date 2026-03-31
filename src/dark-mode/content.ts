@@ -4,15 +4,19 @@ import "./dark-mode.css";
 const DARK_CLASS = "bwm-dark-mode";
 const TOGGLE_ID = "bwm-darkmode-toggle";
 const INQUIRY_ID = "bwm-inquiry-link";
+// フォームはVercelにホスト（Chrome拡張機能のCSP制限を回避）
+const INQUIRY_URL = "https://better-waseda-moodlekai.vercel.app/inquiry.html";
 
 function applyDarkMode(enabled: boolean): void {
-    if (enabled) {
-        document.documentElement.classList.add(DARK_CLASS);
-    } else {
-        document.documentElement.classList.remove(DARK_CLASS);
-    }
+    if (enabled) document.documentElement.classList.add(DARK_CLASS);
+    else document.documentElement.classList.remove(DARK_CLASS);
 }
 
+/**
+ * ナビゲーションの <ul> を探す。
+ * 注入済みマーカー data-bwm="1" が付いていない最初の候補を返す。
+ * これにより複数のナビ要素が存在しても二重注入を防ぐ。
+ */
 function findNavList(): HTMLUListElement | null {
     const candidates = [
         "nav.moremenu [role='menubar']",
@@ -20,64 +24,69 @@ function findNavList(): HTMLUListElement | null {
         ".secondary-navigation ul",
         ".primary-navigation ul.nav",
         ".primary-navigation ul",
-        "ul.nav",
     ];
     for (const sel of candidates) {
         const el = document.querySelector<HTMLUListElement>(sel);
-        if (el && el.querySelectorAll("li").length >= 2) return el;
+        // 既に注入済みの要素は飛ばす
+        if (el && !el.dataset.bwm) return el;
     }
     return null;
 }
 
-/** ライト/ダーク トグルボタンを挿入する */
-function injectToggle(navList: HTMLUListElement, isDark: boolean): void {
-    if (document.getElementById(TOGGLE_ID)) return;
-
+function makeNavItem(id: string, html: string, onClick?: (e: Event) => void): HTMLLIElement {
     const li = document.createElement("li");
     li.setAttribute("role", "none");
     li.className = "nav-item";
 
-    const btn = document.createElement("a");
-    btn.id = TOGGLE_ID;
-    btn.className = "nav-link";
-    btn.setAttribute("role", "menuitem");
-    btn.setAttribute("href", "#");
-    btn.setAttribute("aria-label", isDark ? "ライトモードに切り替える" : "ダークモードに切り替える");
-    btn.innerHTML = `<span>${isDark ? "☀️ ライト" : "🌙 ダーク"}</span>`;
-    btn.style.cssText = "cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;";
+    const a = document.createElement("a");
+    a.id = id;
+    a.className = "nav-link";
+    a.setAttribute("role", "menuitem");
+    a.setAttribute("href", "#");
+    a.innerHTML = html;
+    a.style.cssText = "cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;";
 
-    btn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const next = !getConfig(ConfigKey.DarkModeEnabled);
-        await setConfig(ConfigKey.DarkModeEnabled, next);
-        location.reload();
-    });
+    if (onClick) {
+        a.addEventListener("click", onClick);
+    }
 
-    li.appendChild(btn);
-    navList.appendChild(li);
+    li.appendChild(a);
+    return li;
 }
 
-/** お問い合わせリンクを挿入する */
-function injectInquiryLink(navList: HTMLUListElement): void {
-    if (document.getElementById(INQUIRY_ID)) return;
+function inject(navList: HTMLUListElement, isDark: boolean): void {
+    // navListに注入済みマーカーを付ける
+    navList.dataset.bwm = "1";
 
-    const li = document.createElement("li");
-    li.setAttribute("role", "none");
-    li.className = "nav-item";
+    // ── ライト/ダーク トグル ──
+    const toggleItem = makeNavItem(
+        TOGGLE_ID,
+        `<span>${isDark ? "☀️ ライト" : "🌙 ダーク"}</span>`,
+        async (e) => {
+            e.preventDefault();
+            const next = !getConfig(ConfigKey.DarkModeEnabled);
+            await setConfig(ConfigKey.DarkModeEnabled, next);
+            location.reload();
+        }
+    );
+    navList.appendChild(toggleItem);
 
-    const link = document.createElement("a");
-    link.id = INQUIRY_ID;
-    link.className = "nav-link";
-    link.setAttribute("role", "menuitem");
-    // 拡張機能内のHTMLページを開く
-    link.href = browser.runtime.getURL("inquiry/inquiry.html");
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.innerHTML = `<span>📬 お問い合わせ</span>`;
-    link.style.cssText = "white-space:nowrap;display:flex;align-items:center;gap:4px;";
+    // ── お問い合わせ ──
+    const inquiryItem = makeNavItem(
+        INQUIRY_ID,
+        `<span>📬 お問い合わせ</span>`
+    );
+    const inquiryLink = inquiryItem.querySelector("a")!;
+    inquiryLink.href = INQUIRY_URL;
+    inquiryLink.removeAttribute("href"); // href="#" を削除してからtarget設定
+    inquiryLink.setAttribute("href", INQUIRY_URL);
+    inquiryLink.setAttribute("target", "_blank");
+    inquiryLink.setAttribute("rel", "noopener noreferrer");
+    // クリックイベントのデフォルト（#へのジャンプ）を無効化
+    inquiryLink.removeEventListener("click", () => {});
+    inquiryLink.onclick = null;
 
-    li.appendChild(link);
-    navList.appendChild(li);
+    navList.appendChild(inquiryItem);
 }
 
 (async () => {
@@ -86,10 +95,13 @@ function injectInquiryLink(navList: HTMLUListElement): void {
     applyDarkMode(isDark);
 
     function tryInject(): boolean {
+        // 既に両方注入済みなら何もしない
+        if (document.getElementById(TOGGLE_ID) && document.getElementById(INQUIRY_ID)) return true;
+
         const navList = findNavList();
         if (!navList) return false;
-        injectToggle(navList, isDark);
-        injectInquiryLink(navList);
+
+        inject(navList, isDark);
         return true;
     }
 

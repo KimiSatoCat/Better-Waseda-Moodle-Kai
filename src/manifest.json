@@ -67,8 +67,7 @@
                 "common/auto-login/auto-login-page.html",
                 "block-xhr-requests/inject.js",
                 "assignment-filename/inject.js",
-                "faster-back-and-forward/inject.js",
-                "inquiry/inquiry.html"
+                "faster-back-and-forward/inject.js"
             ],
             "matches": [
                 "https://wsdmoodle.waseda.jp/*"

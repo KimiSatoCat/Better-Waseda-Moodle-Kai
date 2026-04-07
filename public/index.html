@@ -1,9 +1,101 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><title>Better Waseda Moodle 改 API</title></head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Better Waseda Moodle 改</title>
+  <style>
+    :root {
+      --accent: #8b1a2a;
+      --accent-light: #c0392b;
+      --bg: #f5f5f5;
+      --bg-card: #fff;
+      --text: #1a1a1a;
+      --text-muted: #666;
+      --border: #ddd;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 40px 16px 60px; }
+    .container { max-width: 680px; margin: 0 auto; }
+    .hero { text-align: center; padding: 48px 24px 40px; background: var(--bg-card); border-radius: var(--radius); border-left: 4px solid var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 24px; }
+    .hero h1 { font-size: 1.8rem; color: var(--accent); margin-bottom: 12px; }
+    .hero .tagline { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; }
+    .hero .disclaimer { font-size: 0.75rem; color: #999; margin-top: 12px; }
+    .btn { display: inline-block; padding: 12px 32px; background: var(--accent); color: #fff; text-decoration: none; border-radius: var(--radius); font-size: 0.9rem; margin-top: 24px; }
+    .section-title { font-size: 1rem; font-weight: 700; color: var(--accent); margin: 32px 0 14px; border-bottom: 2px solid var(--accent); padding-bottom: 6px; }
+    .card { background: var(--bg-card); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border-left: 3px solid var(--border); }
+    .card h3 { font-size: 0.9rem; color: var(--accent); margin-bottom: 6px; }
+    .card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .price-card { background: var(--bg-card); border-radius: var(--radius); padding: 20px 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid var(--border); text-align: center; }
+    .price-card .price-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+    .price-card .price-amount { font-size: 1.4rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+    .price-card .price-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+    footer { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+    footer a { font-size: 0.8rem; color: var(--text-muted); text-decoration: none; margin: 0 12px; }
+    footer a:hover { color: var(--accent); }
+    footer p { font-size: 0.72rem; color: #aaa; margin-top: 12px; }
+  </style>
+</head>
 <body>
-<h1>Better Waseda Moodle 改 API</h1>
-<p>このサービスはBetter Waseda Moodle 改ブラウザ拡張機能のバックエンドAPIです。</p>
-<p>早稲田大学・Moodleとは一切関係ありません。</p>
+  <div class="container">
+
+    <div class="hero">
+      <h1>Better Waseda Moodle 改</h1>
+      <p class="tagline">
+        早稲田大学Moodleの使い勝手を改善するブラウザ拡張機能。<br />
+        自動ログイン・時間割表示・課題一覧など、日常の操作を快適にします。
+      </p>
+      <p class="disclaimer">※ 早稲田大学・Moodleとは一切関係のない個人開発プロジェクトです。</p>
+      <a href="/inquiry.html" class="btn">お問い合わせ・寄付はこちら</a>
+    </div>
+
+    <h2 class="section-title">主な機能</h2>
+    <div class="card">
+      <h3>自動ログイン</h3>
+      <p>Moodleへのログインを自動化。毎回のID・パスワード入力の手間を省きます。</p>
+    </div>
+    <div class="card">
+      <h3>時間割表示</h3>
+      <p>Moodleのトップページに時間割を表示。今日の授業が一目でわかります。</p>
+    </div>
+    <div class="card">
+      <h3>課題一覧へのクイックアクセス</h3>
+      <p>ツールバーから課題一覧に素早くアクセス。提出期限の確認が簡単になります。</p>
+    </div>
+    <div class="card">
+      <h3>ダークモード対応（Moodle 4.4対応）</h3>
+      <p>夜間の学習も目に優しいダークモードを追加。</p>
+    </div>
+
+    <h2 class="section-title">料金</h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-label">拡張機能本体</div>
+        <div class="price-amount">無料</div>
+        <div class="price-desc">Chrome Web Storeより無料でインストールできます。</div>
+      </div>
+      <div class="price-card">
+        <div class="price-label">お問い合わせ手数料</div>
+        <div class="price-amount">¥500</div>
+        <div class="price-desc">スパム防止のため、お問い合わせ送信に手数料をいただいています。クレジットカード決済（Stripe経由）。</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px;">
+      <h3>任意寄付（開発・サーバー維持支援）</h3>
+      <p>継続的な開発・サーバー費用の支援として、¥200〜¥5,000の任意寄付を受け付けています。</p>
+    </div>
+
+    <footer>
+      <div>
+        <a href="/legal.html">特定商取引法に基づく表記</a>
+        <a href="/inquiry.html">お問い合わせ</a>
+      </div>
+      <p>© 2026 Better Waseda Moodle 改 — 個人開発プロジェクト（佐藤 公宜）</p>
+    </footer>
+
+  </div>
 </body>
 </html>

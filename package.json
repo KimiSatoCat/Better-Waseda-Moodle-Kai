@@ -21,7 +21,7 @@
         "@vercel/node": "^3.2.0",
         "@webextension-toolbox/webextension-toolbox": "^5.2.2",
         "css-loader": "^7.1.0",
-        "css-minimizer-webpack-plugin": "^5.0.0",
+        "css-minimizer-webpack-plugin": "^8.0.0",
         "eslint": "^8.29.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-import-resolver-typescript": "^3.5.2",
